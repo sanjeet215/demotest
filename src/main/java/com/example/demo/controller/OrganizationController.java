@@ -117,6 +117,7 @@ public class OrganizationController {
 	}
 
 	
+	// Returns all the organizations present in database.
 	@GetMapping("/org")
 	public ResponseEntity<ApiResponse> getAll() {
 
