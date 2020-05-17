@@ -11,11 +11,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.example.demo.configuration.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "department")
-public class Department implements Serializable {
+public class Department extends Auditable<String> implements Serializable {
 
 	private static final long serialVersionUID = 291823838206037521L;
 

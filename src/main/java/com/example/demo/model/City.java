@@ -14,11 +14,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.example.demo.configuration.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cities")
-public class City implements Serializable {
+public class City extends Auditable<String> implements Serializable {
 
 	private static final long serialVersionUID = -782723041163379754L;
 

@@ -9,9 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.example.demo.configuration.Auditable;
+
 @Entity
 @Table(name = "countries")
-public class Country implements Serializable {
+public class Country extends Auditable<String> implements Serializable {
 
 	private static final long serialVersionUID = -4878989907113350149L;
 
