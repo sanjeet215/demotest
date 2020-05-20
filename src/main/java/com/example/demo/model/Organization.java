@@ -32,19 +32,11 @@ public class Organization extends Auditable<String> implements Serializable {
 
 	private String description;
 
-	private String contactName;
-
-	private String contactNumber;
-
-	private String contactEmail;
-
-	//@JsonIgnore
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "org_address_id")
 	private Address address;
 
-	@NotNull
 	private boolean status;
 
 	private String imageUrl;
@@ -85,22 +77,6 @@ public class Organization extends Auditable<String> implements Serializable {
 		this.description = description;
 	}
 
-	public String getContactName() {
-		return contactName;
-	}
-
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
-	}
-
-	public String getContactNumber() {
-		return contactNumber;
-	}
-
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-
 	public Address getAddress() {
 		return address;
 	}
@@ -125,19 +101,10 @@ public class Organization extends Auditable<String> implements Serializable {
 		this.imageUrl = imageUrl;
 	}
 
-	public String getContactEmail() {
-		return contactEmail;
-	}
-
-	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
-	}
-
 	@Override
 	public String toString() {
 		return "Organization [orgId=" + orgId + ", orgRefName=" + orgRefName + ", orgName=" + orgName + ", description="
-				+ description + ", contactName=" + contactName + ", contactNumber=" + contactNumber + ", contactEmail="
-				+ contactEmail + ", address=" + address + ", status=" + status + ", imageUrl=" + imageUrl + "]";
+				+ description + ", address=" + address + ", status=" + status + ", imageUrl=" + imageUrl + "]";
 	}
 
 }

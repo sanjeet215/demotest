@@ -25,6 +25,7 @@ import com.example.demo.model.payload.request.OrganizationAddressRequest;
 import com.example.demo.model.payload.request.OrganizationRequest;
 import com.example.demo.model.payload.response.ApiResponse;
 import com.example.demo.model.payload.service.OrganizationService;
+import com.example.demo.model.payload.service.app.SuperAdminServices;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -34,18 +35,24 @@ public class OrganizationController {
 	private static final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
 	@Autowired
+	SuperAdminServices service;
+
+	@Autowired
 	OrganizationService orgService;
 
-	// Request to get all organizations
-//	@GetMapping("/org")
-//	// @PreAuthorize("hasRole('ADMIN')")
-//	public ResponseEntity<ApiResponse> getAllOrganizations() {
-//
-//		logger.debug("Extracting all the organization list..");
-//
-//		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
-//				MessageConstants.ORG_EXTRACTED, orgService.getAllOrganization()));
-//	}
+	/*
+	 * 0. steps of onboarding a organization. 1. Make an entry in organiation table
+	 * 2. Create a user and send its user name password - entry in user table 3. 3.
+	 * Make an entry in Employee table
+	 */
+
+	@PostMapping("/org")
+	public ResponseEntity<ApiResponse> createOrganization(@Valid @RequestBody OrganizationRequest orgReqest) {
+		service.onBoardOrganization(orgReqest);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(HttpStatus.CREATED.value(),
+				MessageConstants.ORG_CREATED_SUCCESS, "Organization Registered Successfully"));
+	}
 
 	// Request to get organization by OrgId (primary key)
 
@@ -66,14 +73,6 @@ public class OrganizationController {
 
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
 				MessageConstants.ORG_ID_AVAILABLE, orgService.checkOrgRefName(orgRefName)));
-	}
-
-	// Create Organization
-	@PostMapping("/org")
-	public ResponseEntity<ApiResponse> createOrganization(@Valid @RequestBody OrganizationRequest orgRequest) {
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(HttpStatus.CREATED.value(),
-				MessageConstants.ORG_CREATED_SUCCESS, orgService.createOrganization(orgRequest)));
 	}
 
 	// Add Address for the Organization
@@ -116,14 +115,13 @@ public class OrganizationController {
 				MessageConstants.ORG_UPDATED, orgService.updateOrganization(org)));
 	}
 
-	
 	// Returns all the organizations present in database.
 	@GetMapping("/org")
 	public ResponseEntity<ApiResponse> getAll() {
 
 		logger.debug("Extracting all the organization list..");
 
-		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
-				MessageConstants.ORG_EXTRACTED, orgService.testMethod()));
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ApiResponse(HttpStatus.OK.value(), MessageConstants.ORG_EXTRACTED, orgService.getallOrganization()));
 	}
 }

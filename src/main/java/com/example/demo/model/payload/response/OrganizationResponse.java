@@ -6,10 +6,8 @@ public class OrganizationResponse {
 	private String orgRefName;
 	private String orgName;
 	private String description;
-	private String contactName;
-	private String contactNumber;
-	private String contactEmail;
 	private boolean status;
+	private String imaeUrl;
 
 	public OrganizationResponse() {
 		super();
@@ -47,36 +45,26 @@ public class OrganizationResponse {
 		this.description = description;
 	}
 
-	public String getContactName() {
-		return contactName;
-	}
-
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
-	}
-
-	public String getContactNumber() {
-		return contactNumber;
-	}
-
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-
-	public String getContactEmail() {
-		return contactEmail;
-	}
-
-	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
-	}
-
 	public boolean isStatus() {
 		return status;
 	}
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+
+	public String getImaeUrl() {
+		return imaeUrl;
+	}
+
+	public void setImaeUrl(String imaeUrl) {
+		this.imaeUrl = imaeUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "OrganizationResponse [orgId=" + orgId + ", orgRefName=" + orgRefName + ", orgName=" + orgName
+				+ ", description=" + description + ", status=" + status + ", imaeUrl=" + imaeUrl + "]";
 	}
 
 }

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constants.MessageConstants;
 import com.example.demo.exception.ResourceAlreadyExistException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.SomeInternalExceptionOccured;
@@ -33,22 +36,18 @@ public class OrganizationService {
 
 	// Add New Organization
 
+	@Transactional
 	public Organization createOrganization(OrganizationRequest orgRequest) {
 
 		if (orgRepo.existsByorgRefName(orgRequest.getOrgRefName())) {
 			logger.debug("Organization Reference Name is already taken.");
-			throw new ResourceAlreadyExistException("Please use a different Organization Name");
+			throw new ResourceAlreadyExistException(MessageConstants.ORG_ID_IN_USE);
 		}
 
-		// By default orgStatus should be true while creating data, so setting it up
-		// without checking
 		Organization organization = new Organization();
 
 		try {
 			organization.setOrgName(orgRequest.getOrgName());
-			organization.setContactName(orgRequest.getContactName());
-			organization.setContactEmail(orgRequest.getContactEmail());
-			organization.setContactNumber(orgRequest.getContactNumber());
 			organization.setOrgRefName(orgRequest.getOrgRefName());
 			organization.setDescription(orgRequest.getDescription());
 			organization.setStatus(true);
@@ -61,8 +60,10 @@ public class OrganizationService {
 		return orgRepo.save(organization);
 	}
 
-	// Check if Organization Referencename is already there. This must a unique
-	// field
+	/*
+	 * Check if Organization Referencename is already there. This must a unique
+	 * field.
+	 */
 	public boolean checkOrgRefName(String orgRefname) {
 		return !orgRepo.existsByorgRefName(orgRefname);
 	}
@@ -79,9 +80,6 @@ public class OrganizationService {
 		return orgRepo.findById(orgUpdated.getOrgId()).map(company -> {
 			company.setOrgName(orgUpdated.getOrgName());
 			company.setDescription(orgUpdated.getDescription());
-			company.setContactName(orgUpdated.getContactName());
-			company.setContactNumber(orgUpdated.getContactNumber());
-			company.setContactEmail(orgUpdated.getContactEmail());
 			return orgRepo.save(company);
 
 		}).orElseThrow(() -> new ResourceNotFoundException("Orgnization Id : " + orgUpdated.getOrgId() + "not found"));
@@ -121,7 +119,7 @@ public class OrganizationService {
 	public Organization getOrganizatiobyId(Long orgId) {
 
 		Optional<Organization> org = orgRepo.findByorgId(orgId);
-		
+
 		if (!org.isPresent()) {
 			throw new ResourceNotFoundException("Please check the request. OrgID not found");
 		} else {
@@ -173,29 +171,27 @@ public class OrganizationService {
 		return addressRepo.save(address);
 
 	}
-	
-	
+
 	// Test Method for LazyLoading
-	public List<OrganizationResponse> testMethod(){
-		
+	public List<OrganizationResponse> getallOrganization() {
+
 		List<Organization> orgList = orgRepo.findAll();
 		List<OrganizationResponse> responseList = new ArrayList<>();
 
-		orgList.forEach(item->{
-			
+		orgList.forEach(item -> {
+
 			OrganizationResponse response = new OrganizationResponse();
-			
+
 			response.setOrgId(item.getOrgId());
 			response.setOrgRefName(item.getOrgRefName());
 			response.setDescription(item.getDescription());
-			response.setContactEmail(item.getContactEmail());
-			response.setContactName(item.getContactName());
-			response.setContactNumber(item.getContactNumber());
 			response.setStatus(item.isStatus());
+			response.setOrgName(item.getOrgName());
+			response.setImaeUrl(item.getImageUrl());
 			
 			responseList.add(response);
 		});
-	
+
 		return responseList;
 	}
 }
