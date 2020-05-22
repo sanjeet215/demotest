@@ -13,6 +13,8 @@ public class MessageConstants {
 	public static final String ORG_UPDATED = "Organization updated successfully";
 	
 	
+	public static final String EMP_EXTRACTED = "Employees List Extracted Successfully";
+	
 	public static final String EMP_EMAILID_INUSE = "email id aready taken!";
 	
 

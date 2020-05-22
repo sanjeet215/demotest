@@ -10,7 +10,8 @@ public class EmployeeResponse {
 	private String empPhoneNo;
 	private String empEmailId;
 	private String empImageUrl;
-	
+	private boolean status;
+
 	public EmployeeResponse() {
 		super();
 	}
@@ -79,12 +80,19 @@ public class EmployeeResponse {
 		this.empImageUrl = empImageUrl;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "EmployeeResponse [empId=" + empId + ", empFName=" + empFName + ", empLName=" + empLName + ", empMName="
 				+ empMName + ", empRefId=" + empRefId + ", empPhoneNo=" + empPhoneNo + ", empEmailId=" + empEmailId
 				+ ", empImageUrl=" + empImageUrl + "]";
 	}
-	
-	
+
 }

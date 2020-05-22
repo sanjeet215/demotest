@@ -30,12 +30,11 @@ public class EmplyoeeService {
 	@Autowired
 	EmployeeRepository empRepo;
 
-	
 	@Autowired
 	OrganizationRepository orgRepo;
-	
+
 	@Transactional
-	public Employee createEmployee(OrganizationRequest empRequest,Organization org) {
+	public Employee createEmployee(OrganizationRequest empRequest, Organization org) {
 
 		/* step 1 - Check if employee exist with email id */
 		if (empRepo.existsByEmpEmailId(empRequest.getContactEmail())) {
@@ -43,15 +42,6 @@ public class EmplyoeeService {
 			throw new ResourceAlreadyExistException(MessageConstants.EMP_EMAILID_INUSE);
 		}
 
-		/* Get Organization by id*/
-//		Optional<Organization> organization = orgRepo.findById(org.getOrgId());
-//		
-//		if(!organization.isPresent()) {
-//			throw new SomeInternalExceptionOccured("Some internal exception occured, please contact asiczen");
-//		}
-		
-		
-		
 		/* 2 - Create employee */
 		Employee employee = new Employee();
 		try {
@@ -60,6 +50,7 @@ public class EmplyoeeService {
 			employee.setEmpEmailId(empRequest.getContactEmail());
 			employee.setEmpPhoneNo(empRequest.getContactNumber());
 			employee.setOrganization(org);
+			employee.setStatus(true);
 		} catch (Exception ep) {
 			logger.error("Error occured while registering an employeea");
 			throw new SomeInternalExceptionOccured(ep.getLocalizedMessage());
@@ -75,7 +66,7 @@ public class EmplyoeeService {
 	}
 
 	// Get Employee list for display as table. So specific details are required.
-	public List<EmployeeResponse> getEmployeebyOrganization(String orgid) {
+	public List<EmployeeResponse> getAllEmployee() {
 
 		logger.debug("extracting employee list for table display");
 
@@ -90,6 +81,9 @@ public class EmplyoeeService {
 			response.setEmpMName(item.getEmpMName());
 			response.setEmpPhoneNo(item.getEmpPhoneNo());
 			response.setEmpRefId(item.getEmpRefId());
+			response.setEmpImageUrl(item.getEmpImageUrl());
+			response.setEmpId(item.getEmpId());
+			response.setStatus(item.isStatus());
 
 			empList.add(response);
 		});

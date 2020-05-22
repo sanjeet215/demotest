@@ -69,6 +69,8 @@ public class Employee extends Auditable<String> implements Serializable {
 	@JoinColumn(name = "DEPT_ID")
 	private Department dept;
 
+	private boolean status;
+
 	public Employee() {
 		super();
 	}
@@ -177,13 +179,21 @@ public class Employee extends Auditable<String> implements Serializable {
 		this.empImageUrl = empImageUrl;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [empId=" + empId + ", empFName=" + empFName + ", empLName=" + empLName + ", empMName="
 				+ empMName + ", empRefId=" + empRefId + ", empPhoneNo=" + empPhoneNo + ", empEmailId=" + empEmailId
 				+ ", empImageUrl=" + empImageUrl + ", organization=" + organization + ", address=" + address
 				+ ", employeeSalaryDetails=" + employeeSalaryDetails + ", jobDetails=" + jobDetails + ", dept=" + dept
-				+ "]";
+				+ ", status=" + status + "]";
 	}
 
 }
