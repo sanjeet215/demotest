@@ -121,7 +121,25 @@ public class OrganizationController {
 
 		logger.debug("Extracting all the organization list..");
 
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ApiResponse(HttpStatus.OK.value(), MessageConstants.ORG_EXTRACTED, orgService.getallOrganization()));
+		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
+				MessageConstants.ORG_EXTRACTED, orgService.getallOrganization()));
+	}
+
+	// All organization count including active and disabled.
+	@GetMapping("/org/count")
+	public ResponseEntity<ApiResponse> organizationCount() {
+		logger.debug("Counting organization including both active and inactive");
+
+		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
+				MessageConstants.COUNT_EXTRACTED, orgService.countOrganization()));
+	}
+
+	// Get organization by count
+	@GetMapping("/org/countstatus")
+	public ResponseEntity<ApiResponse> organizationCountByStatus() {
+		logger.debug("Counting organization group by active and inactive");
+
+		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
+				MessageConstants.COUNT_EXTRACTED, orgService.countOrganizationStatus()));
 	}
 }

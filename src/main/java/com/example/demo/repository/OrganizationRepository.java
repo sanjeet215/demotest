@@ -15,4 +15,6 @@ public interface OrganizationRepository extends JpaRepository<Organization,Long>
 	Optional<Organization> findByorgId(Long orgId);
 	
 	boolean existsByorgRefName(String orgRefName);
+	
+	Long countByStatus(boolean status);
 }

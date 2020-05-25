@@ -19,6 +19,7 @@ import com.example.demo.model.Address;
 import com.example.demo.model.Organization;
 import com.example.demo.model.payload.request.AddressRequest;
 import com.example.demo.model.payload.request.OrganizationRequest;
+import com.example.demo.model.payload.response.OrganizationCountResponse;
 import com.example.demo.model.payload.response.OrganizationResponse;
 import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.OrganizationRepository;
@@ -188,10 +189,36 @@ public class OrganizationService {
 			response.setStatus(item.isStatus());
 			response.setOrgName(item.getOrgName());
 			response.setImaeUrl(item.getImageUrl());
-			
+
 			responseList.add(response);
 		});
 
 		return responseList;
 	}
+
+	public OrganizationCountResponse countOrganization() {
+
+		OrganizationCountResponse orgCount = new OrganizationCountResponse();
+		Long count = orgRepo.count();
+
+		orgCount.setItemName("Organization count:");
+		orgCount.setCount(count);
+
+		return orgCount;
+
+	}
+
+	public List<OrganizationCountResponse> countOrganizationStatus() {
+
+		List<OrganizationCountResponse> orgList = new ArrayList<>();
+
+		Long activeOrg = orgRepo.countByStatus(true);
+		Long inActiveOrg = orgRepo.countByStatus(false);
+
+		orgList.add(new OrganizationCountResponse("activeOrg", activeOrg));
+		orgList.add(new OrganizationCountResponse("inactiveOrg", inActiveOrg));
+
+		return orgList;
+	}
+
 }

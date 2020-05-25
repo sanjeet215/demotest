@@ -4,12 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.example.demo.configuration.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,12 +33,17 @@ public class Department extends Auditable<String> implements Serializable {
 
 	private String description;
 
-	@NotNull
 	private boolean status;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "dept")
 	private List<Employee> employees;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "org_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private Organization organization;
 
 	public Department() {
 		super();
@@ -77,6 +87,14 @@ public class Department extends Auditable<String> implements Serializable {
 
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	@Override

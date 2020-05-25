@@ -36,7 +36,7 @@ public class Organization extends Auditable<String> implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "org_address_id")
 	private Address address;
-
+	
 	private boolean status;
 
 	private String imageUrl;

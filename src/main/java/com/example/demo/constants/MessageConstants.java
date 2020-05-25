@@ -11,6 +11,7 @@ public class MessageConstants {
 	public static final String ADDRESS_ADDED = "Address added successfully";
 	public static final String ADDRESS_UPDATED = "Address updated successfully";
 	public static final String ORG_UPDATED = "Organization updated successfully";
+	public static final String COUNT_EXTRACTED = "Count extracted";
 	
 	
 	public static final String EMP_EXTRACTED = "Employees List Extracted Successfully";

@@ -9,12 +9,15 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.constants.MessageConstants;
 import com.example.demo.exception.ResourceAlreadyExistException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.SomeInternalExceptionOccured;
+import com.example.demo.exception.UnauthorizedAccess;
 import com.example.demo.model.Employee;
 import com.example.demo.model.Organization;
 import com.example.demo.model.payload.request.OrganizationRequest;
@@ -23,6 +26,7 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.OrganizationRepository;
 
 @Service
+// @CacheConfig(cacheNames = "employees")
 public class EmplyoeeService {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmplyoeeService.class);
@@ -91,4 +95,21 @@ public class EmplyoeeService {
 		return empList;
 
 	}
+
+	@Cacheable(value = "employeesCache", key = "#email")
+	public Long getOrgIdbyEmail(String email) {
+
+		Long orgId = 10L;
+
+		Optional<Employee> emp = empRepo.findByEmpEmailId(email);
+		if (!emp.isPresent()) {
+			throw new UnauthorizedAccess("Unauthorized access prohibited.");
+		} else {
+			orgId = emp.get().getOrganization().getOrgId();
+			logger.info("Cache testing");
+		}
+
+		return orgId;
+	}
+
 }
