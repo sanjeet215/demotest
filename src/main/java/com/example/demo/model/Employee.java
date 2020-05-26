@@ -43,6 +43,8 @@ public class Employee extends Auditable<String> implements Serializable {
 
 	private String empImageUrl;
 
+	private String gender;
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "org_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -187,13 +189,21 @@ public class Employee extends Auditable<String> implements Serializable {
 		this.status = status;
 	}
 
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [empId=" + empId + ", empFName=" + empFName + ", empLName=" + empLName + ", empMName="
 				+ empMName + ", empRefId=" + empRefId + ", empPhoneNo=" + empPhoneNo + ", empEmailId=" + empEmailId
-				+ ", empImageUrl=" + empImageUrl + ", organization=" + organization + ", address=" + address
-				+ ", employeeSalaryDetails=" + employeeSalaryDetails + ", jobDetails=" + jobDetails + ", dept=" + dept
-				+ ", status=" + status + "]";
+				+ ", empImageUrl=" + empImageUrl + ", gender=" + gender + ", organization=" + organization
+				+ ", address=" + address + ", employeeSalaryDetails=" + employeeSalaryDetails + ", jobDetails="
+				+ jobDetails + ", dept=" + dept + ", status=" + status + "]";
 	}
 
 }

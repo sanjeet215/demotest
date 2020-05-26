@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.constants.MessageConstants;
@@ -117,6 +118,7 @@ public class OrganizationService {
 
 	// Get organization by Id
 
+	@Cacheable(value = "employeesCache", key = "#orgId")
 	public Organization getOrganizatiobyId(Long orgId) {
 
 		Optional<Organization> org = orgRepo.findByorgId(orgId);
@@ -196,6 +198,7 @@ public class OrganizationService {
 		return responseList;
 	}
 
+	/* Total count of Organization */
 	public OrganizationCountResponse countOrganization() {
 
 		OrganizationCountResponse orgCount = new OrganizationCountResponse();
@@ -208,7 +211,18 @@ public class OrganizationService {
 
 	}
 
-	public List<OrganizationCountResponse> countOrganizationStatus() {
+	/* Active orgnizations */
+
+	public Long countActiveOrganization() {
+		return orgRepo.countByStatus(true);
+	}
+
+	/* disables organizations */
+	public Long countDisabledOrganization() {
+		return orgRepo.countByStatus(true);
+	}
+
+	public List<OrganizationCountResponse> countOrganizationgroupbyStatus() {
 
 		List<OrganizationCountResponse> orgList = new ArrayList<>();
 

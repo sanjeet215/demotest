@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Employee;
+import com.example.demo.model.Organization;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,Long>{
@@ -16,4 +17,5 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long>{
 	
 	boolean existsByEmpEmailId(String emailId);
 
+	long countByOrganization(Organization org);
 }

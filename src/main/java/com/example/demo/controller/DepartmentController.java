@@ -46,14 +46,13 @@ public class DepartmentController {
 	}
 
 	/* Get departments by Organization id */
-	@GetMapping("/department/{orgId}")
-	public ResponseEntity<ApiResponse> getDepartmentsByOrganization(@Valid @PathVariable("orgId") Long orgId) {
-		utilService.authorize();
+	@GetMapping("/department")
+	public ResponseEntity<ApiResponse> getDepartmentsByOrganization() {
 
-		//deptService.getDepartments(orgId)
-		
+		Long orgid = utilService.authorize();
+
 		return ResponseEntity.status(HttpStatus.OK).body(
-				new ApiResponse(HttpStatus.OK.value(), "Departments extracted","Testing" ));
+				new ApiResponse(HttpStatus.OK.value(), "Departments extracted", deptService.getDepartments(orgid)));
 
 	}
 

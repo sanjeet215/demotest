@@ -36,6 +36,9 @@ public class EmplyoeeService {
 
 	@Autowired
 	OrganizationRepository orgRepo;
+	
+	@Autowired
+	OrganizationService orgService;
 
 	@Transactional
 	public Employee createEmployee(OrganizationRequest empRequest, Organization org) {
@@ -110,6 +113,11 @@ public class EmplyoeeService {
 		}
 
 		return orgId;
+	}
+
+
+	public Long countByOrganizationid(Long orgid) {
+		return empRepo.countByOrganization(orgService.getOrganizatiobyId(orgid));
 	}
 
 }

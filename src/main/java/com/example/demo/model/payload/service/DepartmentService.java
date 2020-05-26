@@ -28,7 +28,7 @@ public class DepartmentService {
 	OrganizationRepository orgRepo;
 
 	/* Create Organization service */
-	public Department createDepartment(DepartmentRequest deptRequest,Long orgid) {
+	public Department createDepartment(DepartmentRequest deptRequest, Long orgid) {
 
 		Optional<Organization> org = orgRepo.findByorgId(orgid);
 
@@ -109,4 +109,12 @@ public class DepartmentService {
 
 		return deptList.get();
 	}
+
+	/* Count Departments by organization id */
+
+	public long countDepartmentsByOrganizationid(Long orgid) {
+		return deptRepo.countByOrganization(orgRepo.findByorgId(orgid)
+				.orElseThrow(() -> new ResourceNotFoundException("organization id not found")));
+	}
+
 }

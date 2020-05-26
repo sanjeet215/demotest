@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class OrganizationController {
 	 */
 
 	@PostMapping("/org")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponse> createOrganization(@Valid @RequestBody OrganizationRequest orgReqest) {
 		service.onBoardOrganization(orgReqest);
 
@@ -57,7 +59,7 @@ public class OrganizationController {
 	// Request to get organization by OrgId (primary key)
 
 	@GetMapping("/org/{orgId}")
-	public ResponseEntity<ApiResponse> geOrganizationById(@Valid @PathVariable("orgId") Long orgId) {
+	public ResponseEntity<ApiResponse> getOrganizationById(@Valid @PathVariable("orgId") Long orgId) {
 
 		org.slf4j.Marker marker = null;
 		logger.debug(marker, "Path variable captured is id {}", orgId);
@@ -69,6 +71,7 @@ public class OrganizationController {
 
 	// Validate Org Reference Id
 	@PostMapping("/org/validate")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponse> validateOrganization(@Valid @RequestParam("orgRefName") String orgRefName) {
 
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
@@ -140,6 +143,6 @@ public class OrganizationController {
 		logger.debug("Counting organization group by active and inactive");
 
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
-				MessageConstants.COUNT_EXTRACTED, orgService.countOrganizationStatus()));
+				MessageConstants.COUNT_EXTRACTED, orgService.countOrganizationgroupbyStatus()));
 	}
 }
