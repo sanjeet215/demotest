@@ -72,7 +72,7 @@ public class OrganizationController {
 	// Validate Org Reference Id
 	@PostMapping("/org/validate")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> validateOrganization(@Valid @RequestParam("orgRefName") String orgRefName) {
+	public ResponseEntity<ApiResponse> validateOrganization(@RequestParam String orgRefName) {
 
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
 				MessageConstants.ORG_ID_AVAILABLE, orgService.checkOrgRefName(orgRefName)));
@@ -128,21 +128,5 @@ public class OrganizationController {
 				MessageConstants.ORG_EXTRACTED, orgService.getallOrganization()));
 	}
 
-	// All organization count including active and disabled.
-	@GetMapping("/org/count")
-	public ResponseEntity<ApiResponse> organizationCount() {
-		logger.debug("Counting organization including both active and inactive");
-
-		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
-				MessageConstants.COUNT_EXTRACTED, orgService.countOrganization()));
-	}
-
-	// Get organization by count
-	@GetMapping("/org/countstatus")
-	public ResponseEntity<ApiResponse> organizationCountByStatus() {
-		logger.debug("Counting organization group by active and inactive");
-
-		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(),
-				MessageConstants.COUNT_EXTRACTED, orgService.countOrganizationgroupbyStatus()));
-	}
+	
 }

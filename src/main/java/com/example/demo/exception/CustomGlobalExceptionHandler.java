@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -34,6 +34,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		body.put("message", errors);
 
 		return new ResponseEntity<>(body, headers, status);
+
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<CustomErrorResponse> accessDeniedException(Exception ex, WebRequest request) {
+		
+		CustomErrorResponse errors = new CustomErrorResponse();
+		errors.setTimestamp(LocalDateTime.now());
+		errors.setStatus(HttpStatus.FORBIDDEN.value());
+		errors.setMessage(ex.getMessage());
+
+		return new ResponseEntity<>(errors, HttpStatus.FORBIDDEN);
 
 	}
 
@@ -72,16 +84,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}
-	
-	@ExceptionHandler(UnauthorizedAccess.class)
-    public ResponseEntity<CustomErrorResponse> unauthorizedAccessException(Exception ex, WebRequest request){
-    	
-    	CustomErrorResponse errors = new CustomErrorResponse();
-        errors.setTimestamp(LocalDateTime.now());
-        errors.setStatus(HttpStatus.UNAUTHORIZED.value());
-        errors.setMessage(ex.getMessage());
 
-        return new ResponseEntity<>(errors, HttpStatus.UNAUTHORIZED);
-    }
+	@ExceptionHandler(UnauthorizedAccess.class)
+	public ResponseEntity<CustomErrorResponse> unauthorizedAccessException(Exception ex, WebRequest request) {
+
+		CustomErrorResponse errors = new CustomErrorResponse();
+		errors.setTimestamp(LocalDateTime.now());
+		errors.setStatus(HttpStatus.UNAUTHORIZED.value());
+		errors.setMessage(ex.getMessage());
+
+		return new ResponseEntity<>(errors, HttpStatus.UNAUTHORIZED);
+	}
 
 }
