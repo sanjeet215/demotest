@@ -9,13 +9,15 @@ import com.example.demo.model.Employee;
 import com.example.demo.model.Organization;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee,Long>{
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	Optional<Employee> findByempId(Long empid);
-	
+
 	Optional<Employee> findByEmpEmailId(String emailId);
-	
+
 	boolean existsByEmpEmailId(String emailId);
+
+	boolean existsByEmpPhoneNo(String phoneno);
 
 	long countByOrganization(Organization org);
 }

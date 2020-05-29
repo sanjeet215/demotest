@@ -19,4 +19,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 	Optional<Department> findBydeptId(Long deptId);
 
 	Optional<List<Department>> findByOrganizationAndStatus(Organization org, boolean b);
+
+	Optional<Department> findByDeptNameAndOrganization(String deptName, Organization org);
 }

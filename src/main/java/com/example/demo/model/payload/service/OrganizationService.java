@@ -17,12 +17,14 @@ import com.example.demo.exception.ResourceAlreadyExistException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.SomeInternalExceptionOccured;
 import com.example.demo.model.Address;
+import com.example.demo.model.CustomErrors;
 import com.example.demo.model.Organization;
 import com.example.demo.model.payload.request.AddressRequest;
 import com.example.demo.model.payload.request.OrganizationRequest;
 import com.example.demo.model.payload.response.OrganizationCountResponse;
 import com.example.demo.model.payload.response.OrganizationResponse;
 import com.example.demo.repository.AddressRepository;
+import com.example.demo.repository.CustomErrorRepository;
 import com.example.demo.repository.OrganizationRepository;
 
 @Service
@@ -36,6 +38,8 @@ public class OrganizationService {
 	@Autowired
 	AddressRepository addressRepo;
 
+	@Autowired
+	CustomErrorRepository errorRepo;
 	// Add New Organization
 
 	@Transactional
@@ -55,6 +59,7 @@ public class OrganizationService {
 			organization.setStatus(true);
 		} catch (Exception ep) {
 			logger.error("Error occured while  assigning the object");
+			errorRepo.save(new CustomErrors("Issue in data type", orgRequest.toString(), ep.getLocalizedMessage()));
 			throw new SomeInternalExceptionOccured(ep.getLocalizedMessage());
 		}
 		logger.debug("Setting organization status to true while creating the organization");

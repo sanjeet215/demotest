@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.poi.POIXMLException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -37,9 +40,42 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
 	}
 
+	@ExceptionHandler({ POIXMLException.class, NullPointerException.class,InvalidFormatException.class })
+	public ResponseEntity<CustomErrorResponse> excelExccception(Exception ex, WebRequest request) {
+
+		CustomErrorResponse errors = new CustomErrorResponse();
+		errors.setTimestamp(LocalDateTime.now());
+		errors.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		errors.setMessage("Invlaid file. Please upload xslx file");
+
+		return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(FileNotFoundException.class)
+	public ResponseEntity<CustomErrorResponse> filenotFoundException(Exception ex, WebRequest request) {
+
+		CustomErrorResponse errors = new CustomErrorResponse();
+		errors.setTimestamp(LocalDateTime.now());
+		errors.setStatus(HttpStatus.NOT_FOUND.value());
+		errors.setMessage(ex.getMessage());
+
+		return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(FileStorageException.class)
+	public ResponseEntity<CustomErrorResponse> fileStorageException(Exception ex, WebRequest request) {
+
+		CustomErrorResponse errors = new CustomErrorResponse();
+		errors.setTimestamp(LocalDateTime.now());
+		errors.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		errors.setMessage(ex.getMessage());
+
+		return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<CustomErrorResponse> accessDeniedException(Exception ex, WebRequest request) {
-		
+
 		CustomErrorResponse errors = new CustomErrorResponse();
 		errors.setTimestamp(LocalDateTime.now());
 		errors.setStatus(HttpStatus.FORBIDDEN.value());

@@ -58,6 +58,7 @@ public class DepartmentController {
 
 	@PutMapping("/department")
 	public ResponseEntity<ApiResponse> updateDepartment(@Valid @RequestBody DepartmentRequest deptRequest) {
+		
 		utilService.authorize();
 
 		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(HttpStatus.OK.value(), "Department updated",

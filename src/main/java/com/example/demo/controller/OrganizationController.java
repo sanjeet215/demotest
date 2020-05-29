@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.constants.MessageConstants;
 import com.example.demo.model.Address;
@@ -25,6 +26,7 @@ import com.example.demo.model.payload.request.AddressRequest;
 import com.example.demo.model.payload.request.OrganizationAddressRequest;
 import com.example.demo.model.payload.request.OrganizationRequest;
 import com.example.demo.model.payload.response.ApiResponse;
+import com.example.demo.model.payload.service.FileStorageService;
 import com.example.demo.model.payload.service.OrganizationService;
 import com.example.demo.model.payload.service.app.SuperAdminServices;
 
@@ -40,6 +42,9 @@ public class OrganizationController {
 
 	@Autowired
 	OrganizationService orgService;
+
+	@Autowired
+	private FileStorageService fileStorageService;
 
 	/*
 	 * 0. steps of onboarding a organization. 1. Make an entry in organiation table
@@ -128,5 +133,12 @@ public class OrganizationController {
 				MessageConstants.ORG_EXTRACTED, orgService.getallOrganization()));
 	}
 
-	
+	// Upload organization file
+	@PostMapping("/org/upload")
+	// @PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ApiResponse> uploadOrganization(@RequestParam("file") MultipartFile file) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(new ApiResponse(HttpStatus.CREATED.value(), "File Uploaded successfully", service.onBoardOrganizationList(fileStorageService.storeFile(file))));
+	}
+
 }

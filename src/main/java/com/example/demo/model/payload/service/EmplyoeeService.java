@@ -49,6 +49,8 @@ public class EmplyoeeService {
 			throw new ResourceAlreadyExistException(MessageConstants.EMP_EMAILID_INUSE);
 		}
 
+		/* Check for mobile Number */
+		
 		/* 2 - Create employee */
 		Employee employee = new Employee();
 		try {

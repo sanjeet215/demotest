@@ -14,6 +14,8 @@ public class MessageConstants {
 	public static final String COUNT_EXTRACTED = "Count extracted";
 	
 	
+	public static final String CONTACT_ALREADY_IN_USE = "Contact number is already in use";
+	
 	public static final String EMP_EXTRACTED = "Employees List Extracted Successfully";
 	
 	public static final String EMP_EMAILID_INUSE = "email id aready taken!";
